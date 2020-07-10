@@ -26,7 +26,7 @@ worker_id=0
 input_file: The file to be back translated. We assume that each paragraph is in
 a separate line
 '''
-input_file=30k.txt
+input_file=final_five_repeats.txt
 
 '''
 sampling_temp: The sampling temperature for translation. See README.md for more
@@ -38,9 +38,7 @@ sampling_temp=0.4
 # Dirs
 data_dir=back_trans_data
 doc_len_dir=${data_dir}/doc_len
-
-
-	forward_src_dir=${data_dir}/forward_src
+forward_src_dir=${data_dir}/forward_src
 forward_gen_dir=${data_dir}/forward_gen
 backward_gen_dir=${data_dir}/backward_gen
 para_dir=${data_dir}/paraphrase
@@ -53,14 +51,14 @@ mkdir -p ${doc_len_dir}
 mkdir -p ${para_dir}
 
 
-##echo "*** spliting paragraph ***"
+echo "*** spliting paragraph ***"
 # install nltk
-#python split_paragraphs_modified_.py \
-#  --input_file=${input_file} \
-#  --output_file=${forward_src_dir}/file_${worker_id}_of_${replicas}.txt \
-#  --doc_len_file=${doc_len_dir}/doc_len_${worker_id}_of_${replicas}.json \
-#  --replicas=${replicas} \
-#  --worker_id=${worker_id} \
+python split_paragraphs_modified_.py \
+  --input_file=${input_file} \
+  --output_file=${forward_src_dir}/file_${worker_id}_of_${replicas}.txt \
+  --doc_len_file=${doc_len_dir}/doc_len_${worker_id}_of_${replicas}.json \
+  --replicas=${replicas} \
+  --worker_id=${worker_id} \
 
 echo "*** forward translation ***"
 t2t-decoder \
@@ -71,7 +69,7 @@ t2t-decoder \
   --decode_hparams="beam_size=1,batch_size=256" \
   --checkpoint_path=checkpoints/enfr/model.ckpt-500000 \
   --output_dir=/tmp/t2t \
-  --decode_from_file=${input_file} \
+  --decode_from_file=${forward_src_dir}/file_${worker_id}_of_${replicas}.txt \
   --decode_to_file=${forward_gen_dir}/file_${worker_id}_of_${replicas}.txt \
   --data_dir=checkpoints
 
