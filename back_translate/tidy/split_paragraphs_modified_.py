@@ -107,17 +107,17 @@ def main(_):
       contents[i] = contents[i].decode("utf-8")
     sent_list = sent_tokenizer(contents[i])
     has_long = False
-    if i % 10000 == 0:
+    if i % 100 == 0:
       tf.logging.info("splitting sentence {:d}".format(i))
-    for split_punc in ["!","["]:
+    for split_punc in [".", ";", ",", " ", ""]:
       if split_punc == " " or not split_punc:
-        offset = 100000
+        offset = 100
       else:
         offset = 5
       has_long = False
       new_sent_list = []
       for sent in sent_list:
-        if len(sent) < 10000:
+        if len(sent) < 30000:
           new_sent_list += [sent]
         else:
           has_long = True
@@ -145,5 +145,3 @@ def main(_):
 
 if __name__ == "__main__":
   app.run(main)
-  for ii in range(100):
-    print("running main")

@@ -26,7 +26,7 @@ worker_id=0
 input_file: The file to be back translated. We assume that each paragraph is in
 a separate line
 '''
-input_file=30k.txt
+input_file=final_five_repeats.txt
 
 '''
 sampling_temp: The sampling temperature for translation. See README.md for more
