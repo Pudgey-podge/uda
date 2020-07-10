@@ -40,7 +40,7 @@ data_dir=back_trans_data
 doc_len_dir=${data_dir}/doc_len
 
 
-	forward_src_dir=${data_dir}/forward_src
+forward_src_dir=${data_dir}/forward_src
 forward_gen_dir=${data_dir}/forward_gen
 backward_gen_dir=${data_dir}/backward_gen
 para_dir=${data_dir}/paraphrase
